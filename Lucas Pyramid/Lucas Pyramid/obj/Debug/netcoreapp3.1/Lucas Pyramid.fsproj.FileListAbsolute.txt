@@ -18,7 +18,6 @@ C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\tr\FSharp.Core.resources.dll
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\zh-Hans\FSharp.Core.resources.dll
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\zh-Hant\FSharp.Core.resources.dll
-C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\obj\Debug\netcoreapp3.1\Lucas Pyramid.fsprojAssemblyReference.cache
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\obj\Debug\netcoreapp3.1\Lucas Pyramid.AssemblyInfoInputs.cache
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\obj\Debug\netcoreapp3.1\Lucas Pyramid.AssemblyInfo.fs
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\obj\Debug\netcoreapp3.1\Lucas Pyramid.fsproj.CopyComplete
@@ -57,3 +56,4 @@ C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\Akka.Cluster.dll
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\Akka.Streams.dll
 C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\bin\Debug\netcoreapp3.1\Reactive.Streams.dll
+C:\Users\moham\Documents\GitHub\Lucas-Square-Pyramid\Lucas Pyramid\Lucas Pyramid\obj\Debug\netcoreapp3.1\Lucas Pyramid.fsprojAssemblyReference.cache

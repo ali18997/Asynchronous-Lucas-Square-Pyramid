@@ -1,18 +1,30 @@
 ﻿open Akka
-open Akka.Actor
- 
-type Greet(who) =
-    member x.Who = who
- 
-type GreetingActor() as g =
-    inherit ReceiveActor()
-    do g.Receive<Greet>(fun (greet:Greet) -> printfn "Hello %s" greet.Who)
- 
-[<EntryPoint>]  // Works also from F#-Interactive.
-let main argv = // More details: http://getakka.net/docs/Getting%20started
-    let system = ActorSystem.Create "MySystem"
-    let greeter = system.ActorOf<GreetingActor> "greeter"
-    "World" |> Greet |> greeter.Tell
-    System.Console.ReadLine() |> ignore
-    0 // return an integer exit code
+open Akka.FSharp
+open Akka.Configuration
+open System
 
+
+let check start length = 
+    let mutable sum = 0
+
+    for i = start to start+length-1 do
+        sum <- sum + i*i
+
+    if sqrt (float sum) % float 1 = 0.0 then
+        true
+    else
+        false
+
+let lucasPyramid endPoint length = 
+    let mutable retVal = -1
+    let mutable flag = true
+    for i = 1 to endPoint do
+        if check i length then
+            if flag then
+                retVal <- i
+                flag <- false
+
+    retVal
+
+let a = lucasPyramid 100000000 4
+printfn "%i"a
