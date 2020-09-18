@@ -6,46 +6,6 @@ open Akka.Actor
 
 open System.Diagnostics
 
-let time f = 
-    let proc = Process.GetCurrentProcess()
-    let cpu_time_stamp = proc.TotalProcessorTime
-    let timer = new Stopwatch()
-    timer.Start()
-    try
-        f()
-    finally
-        let cpu_time = (proc.TotalProcessorTime-cpu_time_stamp).TotalMilliseconds
-        printfn "CPU time = %dms" (int64 cpu_time)
-        printfn "Absolute time = %dms" timer.ElapsedMilliseconds
-
-
-let check start length = 
-    let mutable sum = 0
-
-    for i = start to start+length-1 do
-        sum <- sum + i*i
-
-    if sqrt (float sum) % float 1 = 0.0 then
-        true
-    else
-        false
-
-let lucasPyramid endPoint length = 
-    let mutable retVal = -1
-    let mutable flag = true
-    for i = 1 to endPoint do
-        if check i length then
-            if flag then
-                retVal <- i
-                flag <- false
-
-    retVal
-    
-
-//time (fun () -> lucasPyramid 1000000 4)
-
-
-
 type ParentMessage() = 
     [<DefaultValue>] val mutable endPoint: int
     [<DefaultValue>] val mutable length: int
@@ -91,25 +51,30 @@ let child (childMailbox:Actor<ChildMessage>) =
     }
     childLoop()
 
+let proc = Process.GetCurrentProcess()
+let cpu_time_stamp = proc.TotalProcessorTime
+let timer = new Stopwatch()
+timer.Start()
+
 let parent (parentMailbox:Actor<ParentMessage>) =
     // parent actor spawns child - is the supervisor of the child
     let mutable startPoint = 0
     let mutable endPoint = 0
     let mutable length  = 0
-    let workSize = 10000
+    let mutable result = false
+    let mutable resultFlag = true
+    let mutable resultIndex = 0
+    let mutable workSize = 10
+    let mutable recoverWorkers = 0
     let rec parentLoop() = actor {
         let! (msg: ParentMessage) = parentMailbox.Receive()
         if(msg.startFlag) then
             startPoint <- 1
             endPoint <- msg.endPoint
             length <- msg.length
-            let mutable tillPoint = 0
-            if endPoint > workSize then
-                tillPoint <- workSize
-            else 
-                tillPoint <- endPoint
-            for i = 1 to tillPoint do
-                printfn "Send %i" i
+            if endPoint <= workSize then
+                workSize<- endPoint
+            for i = 1 to workSize do
                 let name:string = "child" + i.ToString()
                 let child = spawn parentMailbox name child
                 let sendMessage = new ChildMessage()
@@ -119,18 +84,29 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                 startPoint <- i
         
         if(msg.replyFlag) then
-            printf "Receive %i" msg.endPoint
-            printfn " %b" msg.replyVal
+            if msg.replyVal && resultFlag then
+                result <- true
+                resultFlag <- false
+                resultIndex <- msg.endPoint
+
             if startPoint < endPoint then
                 startPoint <- startPoint + 1
-                printfn "Send %i" startPoint
                 let sender = parentMailbox.Sender()
                 let sendMessage = new ChildMessage()
                 sendMessage.start <- startPoint
                 sendMessage.length <- msg.length
                 sender <! sendMessage
-            if msg.replyVal or startPoint = endPoint then
-                printfn "%b" msg.replyVal
+            else
+                workSize <- workSize - 1
+                if workSize = 0 then
+                    if result then
+                        printfn "Found sequence starting at %i" resultIndex
+                    else
+                        printfn "No sequence found"
+                    let cpu_time = (proc.TotalProcessorTime-cpu_time_stamp).TotalMilliseconds
+                    printfn "CPU time = %dms" (int64 cpu_time)
+                    printfn "Absolute time = %dms" timer.ElapsedMilliseconds
+                    system.Terminate()
 
         return! parentLoop()
     }
@@ -138,16 +114,20 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                         
 
 let mainMessage = new ParentMessage()
-mainMessage.endPoint <- 100000
-mainMessage.length <- 4
+mainMessage.endPoint <- 3
+mainMessage.length <- 2
 mainMessage.startFlag <- true
 mainMessage.replyFlag <- false
 mainMessage.replyVal <- false
 
 let parentActor = spawn system "parent" parent
-parentActor <! mainMessage
 
-//time (fun () -> parentActor <! mainMessage)
+
+parentActor <? mainMessage
+
 System.Console.ReadKey() |> ignore
-system.Terminate()
+
+
+
+
 
