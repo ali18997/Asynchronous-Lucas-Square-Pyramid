@@ -62,10 +62,7 @@ let parent (parentMailbox:Actor<ParentMessage>) =
     let mutable endPoint = 0
     let mutable length  = 0
     let mutable result = false
-    let mutable resultFlag = true
-    let mutable resultIndex = 0
     let mutable workSize = 10
-    let mutable recoverWorkers = 0
     let rec parentLoop() = actor {
         let! (msg: ParentMessage) = parentMailbox.Receive()
         if(msg.startFlag) then
@@ -84,10 +81,9 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                 startPoint <- i
         
         if(msg.replyFlag) then
-            if msg.replyVal && resultFlag then
+            if msg.replyVal then
+                printfn "Found sequence starting at %i" msg.endPoint
                 result <- true
-                resultFlag <- false
-                resultIndex <- msg.endPoint
 
             if startPoint < endPoint then
                 startPoint <- startPoint + 1
@@ -99,13 +95,14 @@ let parent (parentMailbox:Actor<ParentMessage>) =
             else
                 workSize <- workSize - 1
                 if workSize = 0 then
-                    if result then
-                        printfn "Found sequence starting at %i" resultIndex
-                    else
+                    if result = false then
                         printfn "No sequence found"
                     let cpu_time = (proc.TotalProcessorTime-cpu_time_stamp).TotalMilliseconds
+                    printfn ""
                     printfn "CPU time = %dms" (int64 cpu_time)
                     printfn "Absolute time = %dms" timer.ElapsedMilliseconds
+                    printfn ""
+                    printfn "Press Any Key To Close"
                     system.Terminate()
 
         return! parentLoop()
@@ -114,8 +111,8 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                         
 
 let mainMessage = new ParentMessage()
-mainMessage.endPoint <- 3
-mainMessage.length <- 2
+mainMessage.endPoint <- 1000000
+mainMessage.length <- 4
 mainMessage.startFlag <- true
 mainMessage.replyFlag <- false
 mainMessage.replyVal <- false
