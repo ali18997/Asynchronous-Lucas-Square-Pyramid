@@ -1,8 +1,6 @@
 ﻿open Akka
 open Akka.FSharp
-open Akka.Configuration
 open System
-open Akka.Actor
 
 open System.Diagnostics
 
