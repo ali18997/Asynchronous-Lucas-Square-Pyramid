@@ -57,7 +57,6 @@ type ParentMessage() =
 type ChildMessage() = 
     [<DefaultValue>] val mutable start: int
     [<DefaultValue>] val mutable length: int
-    [<DefaultValue>] val mutable endPoint: int
 
 let system = System.create "system" <| Configuration.defaultConfig()
 
@@ -94,23 +93,44 @@ let child (childMailbox:Actor<ChildMessage>) =
 
 let parent (parentMailbox:Actor<ParentMessage>) =
     // parent actor spawns child - is the supervisor of the child
-    let mutable workSize = 10000
+    let mutable startPoint = 0
+    let mutable endPoint = 0
+    let mutable length  = 0
+    let workSize = 10000
     let rec parentLoop() = actor {
         let! (msg: ParentMessage) = parentMailbox.Receive()
         if(msg.startFlag) then
-            for i = 1 to msg.endPoint do
-                printfn "%i" i
+            startPoint <- 1
+            endPoint <- msg.endPoint
+            length <- msg.length
+            let mutable tillPoint = 0
+            if endPoint > workSize then
+                tillPoint <- workSize
+            else 
+                tillPoint <- endPoint
+            for i = 1 to tillPoint do
+                printfn "Send %i" i
                 let name:string = "child" + i.ToString()
                 let child = spawn parentMailbox name child
                 let sendMessage = new ChildMessage()
                 sendMessage.start <- i
                 sendMessage.length <- msg.length
-                sendMessage.endPoint <- msg.endPoint
                 child <! sendMessage
+                startPoint <- i
         
         if(msg.replyFlag) then
-            printfn "%i" msg.endPoint
-            printfn "%b" msg.replyVal
+            printf "Receive %i" msg.endPoint
+            printfn " %b" msg.replyVal
+            if startPoint < endPoint then
+                startPoint <- startPoint + 1
+                printfn "Send %i" startPoint
+                let sender = parentMailbox.Sender()
+                let sendMessage = new ChildMessage()
+                sendMessage.start <- startPoint
+                sendMessage.length <- msg.length
+                sender <! sendMessage
+            if msg.replyVal or startPoint = endPoint then
+                printfn "%b" msg.replyVal
 
         return! parentLoop()
     }
@@ -118,15 +138,16 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                         
 
 let mainMessage = new ParentMessage()
-mainMessage.endPoint <- 1000000
+mainMessage.endPoint <- 100000
 mainMessage.length <- 4
 mainMessage.startFlag <- true
 mainMessage.replyFlag <- false
 mainMessage.replyVal <- false
 
 let parentActor = spawn system "parent" parent
-//parentActor <! mainMessage
+parentActor <! mainMessage
 
-time (fun () -> parentActor <! mainMessage)
-
+//time (fun () -> parentActor <! mainMessage)
+System.Console.ReadKey() |> ignore
 system.Terminate()
+
