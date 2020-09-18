@@ -82,7 +82,7 @@ let parent (parentMailbox:Actor<ParentMessage>) =
         
         if(msg.replyFlag) then
             if msg.replyVal then
-                printfn "Found sequence starting at %i" msg.endPoint
+                printfn "%i" msg.endPoint
                 result <- true
 
             if startPoint < endPoint then
@@ -108,21 +108,28 @@ let parent (parentMailbox:Actor<ParentMessage>) =
         return! parentLoop()
     }
     parentLoop()
+
+[<EntryPoint>]
+let main(args) =    
+
+    let mainMessage = new ParentMessage()
+    mainMessage.endPoint <- args.[0] |> int
+    mainMessage.length <- args.[1] |> int
+    mainMessage.startFlag <- true
+    mainMessage.replyFlag <- false
+    mainMessage.replyVal <- false
+    
+    let parentActor = spawn system "parent" parent
+    
+    
+    parentActor <! mainMessage
+    
+    System.Console.ReadKey() |> ignore
+    
+    0
+
                         
 
-let mainMessage = new ParentMessage()
-mainMessage.endPoint <- 1000000
-mainMessage.length <- 4
-mainMessage.startFlag <- true
-mainMessage.replyFlag <- false
-mainMessage.replyVal <- false
-
-let parentActor = spawn system "parent" parent
-
-
-parentActor <? mainMessage
-
-System.Console.ReadKey() |> ignore
 
 
 
