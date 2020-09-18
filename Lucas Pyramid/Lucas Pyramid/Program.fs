@@ -3,6 +3,7 @@ open Akka
 open Akka.FSharp
 open System
 open System.Diagnostics
+open Akka.Actor
 
 
 //Message that will be passed to parents to start code as well as to reply from child to parent
@@ -217,6 +218,10 @@ let parent (parentMailbox:Actor<ParentMessage>) =
 
                 //Subtract the work unit on each reply coming here to see when all children are done processing
                 workSize <- workSize - 1
+
+                //Close the Child Actors
+                let sender = parentMailbox.Sender()
+                sender <! PoisonPill.Instance
 
                 //If work unit reaches 0, all children are done processing so close everything and display results
                 if workSize = 0 then
