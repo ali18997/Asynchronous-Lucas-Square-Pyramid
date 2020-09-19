@@ -1,3 +1,7 @@
+Group Members:
+Syed Muhammad Ali 3816-1305
+Siddharth Jain 9881-8991
+
 • Size of the work unit that you determined results in best performance for
 your implementation and an explanation on how you determined it. Size
 of the work unit refers to the number of sub-problems that a worker gets
@@ -26,7 +30,6 @@ Cores effective = 5.45
 
 
 • The largest problem you managed to solve.
-
 The highest problem tried was 100000000 20
 The result for it is as follows:
 No sequence found
