@@ -1,16 +1,13 @@
 ﻿
-
-#I @".\bin\Debug\netcoreapp3.1"
-
-#r "Akka.FSharp.dll"
-#r "Akka.dll"
+#r "nuget: Akka" 
+#r "nuget: Akka.FSharp" 
+#r "nuget: Akka.TestKit"
 
 open Akka
 open Akka.Actor
 open Akka.FSharp
 open System
 open System.Diagnostics
-
 
 //Message that will be passed to parents to start code as well as to reply from child to parent
 type ParentMessage() = 
@@ -246,6 +243,7 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                     printfn ""
                     printfn "CPU time = %dms" (cpu_time)
                     printfn "Absolute time = %dms" realTime
+                    
 
                     //If the problem was not very small, parallelism will show up
                     if cpu_time > realTime then
@@ -256,7 +254,7 @@ let parent (parentMailbox:Actor<ParentMessage>) =
                     printfn "Press Any Key To Close"
 
                     //Close all actors
-                    system.Terminate()
+                    system.Terminate() |> ignore
         
         //Keep parent loop running
         return! parentLoop()

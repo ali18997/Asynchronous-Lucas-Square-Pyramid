@@ -23,10 +23,9 @@ run time scala project1.scala 1000000 4 and report the time. The
 ratio of CPU time to REAL TIME tells you how many cores were effectively used in the computation. If your are close to 1 you have almost no
 parallelism (points will be subtracted).
 
-CPU time = 11578ms
-Absolute time = 2122ms
-
-Cores effective = 5.45
+CPU time = 8953ms
+Absolute time = 1275ms
+Cores Used = 7.021961
 
 
 • The largest problem you managed to solve.
