@@ -2,6 +2,11 @@ Group Members:
 Syed Muhammad Ali 3816-1305
 Siddharth Jain 9881-8991
 
+Running instructions:
+Go to \Lucas Pyramid\Lucas Pyramid and run the proj1.fsx file as: dotnet fsi --langversion:preview script1.fsx 1000000 4
+OR
+Import the whole project in visual studio and run the program.fs file with arguments also passed from visual studio
+
 • Size of the work unit that you determined results in best performance for
 your implementation and an explanation on how you determined it. Size
 of the work unit refers to the number of sub-problems that a worker gets
