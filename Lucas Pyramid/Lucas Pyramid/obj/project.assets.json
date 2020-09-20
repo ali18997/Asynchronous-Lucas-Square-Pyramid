@@ -99,6 +99,18 @@
           "lib/netstandard2.0/Akka.Streams.dll": {}
         }
       },
+      "Akka.TestKit/1.4.10": {
+        "type": "package",
+        "dependencies": {
+          "Akka": "1.4.10"
+        },
+        "compile": {
+          "lib/netstandard2.0/Akka.TestKit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Akka.TestKit.dll": {}
+        }
+      },
       "DotNetty.Buffers/0.6.0": {
         "type": "package",
         "dependencies": {
@@ -2050,6 +2062,19 @@
         "akka.streams.nuspec",
         "lib/netstandard2.0/Akka.Streams.dll",
         "lib/netstandard2.0/Akka.Streams.xml"
+      ]
+    },
+    "Akka.TestKit/1.4.10": {
+      "sha512": "WVZy6X0V4gks8IpU+uZDAfAE/5AaCklKYjIWGUKOFT5YZwXhgu5Rq/mqIlSFJaq745gXOtTSNEubx5yn7MvE+g==",
+      "type": "package",
+      "path": "akka.testkit/1.4.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "akka.testkit.1.4.10.nupkg.sha512",
+        "akka.testkit.nuspec",
+        "lib/netstandard2.0/Akka.TestKit.dll",
+        "lib/netstandard2.0/Akka.TestKit.xml"
       ]
     },
     "DotNetty.Buffers/0.6.0": {
@@ -6535,6 +6560,7 @@
       "Akka.Persistence.FSharp >= 1.4.10",
       "Akka.Remote >= 1.4.10",
       "Akka.Streams >= 1.4.10",
+      "Akka.TestKit >= 1.4.10",
       "FSharp.Core >= 4.7.2"
     ]
   },
@@ -6601,6 +6627,11 @@
             "generatePathProperty": true
           },
           "Akka.Streams": {
+            "target": "Package",
+            "version": "[1.4.10, )",
+            "generatePathProperty": true
+          },
+          "Akka.TestKit": {
             "target": "Package",
             "version": "[1.4.10, )",
             "generatePathProperty": true

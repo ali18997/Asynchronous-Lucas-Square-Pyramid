@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+trosMD7hEDjksg5MxQUGVJ0OhySgvyAoEXMcKYO7hqXac7jRDux+vChPGOsN2qoPQxooFWOaOnrfOcyt3XB+g==",
+  "dgSpecHash": "0g86IKg+ZCKQN+dGQNwWafGQtCp0wuiAJo/2XcNA2GUY/uBkAP13KsqR3/o9jH/kbBFZJAJYOZzFp38zdq9v9Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\moham\\Documents\\GitHub\\Lucas-Square-Pyramid\\Lucas Pyramid\\Lucas Pyramid\\Lucas Pyramid.fsproj",
   "expectedPackageFiles": [
@@ -11,6 +11,7 @@
     "C:\\Users\\moham\\.nuget\\packages\\akka.persistence.fsharp\\1.4.10\\akka.persistence.fsharp.1.4.10.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\akka.remote\\1.4.10\\akka.remote.1.4.10.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\akka.streams\\1.4.10\\akka.streams.1.4.10.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\akka.testkit\\1.4.10\\akka.testkit.1.4.10.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.buffers\\0.6.0\\dotnetty.buffers.0.6.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.codecs\\0.6.0\\dotnetty.codecs.0.6.0.nupkg.sha512",
     "C:\\Users\\moham\\.nuget\\packages\\dotnetty.common\\0.6.0\\dotnetty.common.0.6.0.nupkg.sha512",

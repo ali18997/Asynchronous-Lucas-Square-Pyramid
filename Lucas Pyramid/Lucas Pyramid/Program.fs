@@ -49,7 +49,7 @@ let child (childMailbox:Actor<ChildMessage>) =
         let! msg = childMailbox.Receive()
 
         //Sum counter that will keep track of sum so far
-        let mutable sum = 0
+        let mutable sum = float 0
 
         //Starting value of the sequence to check
         let start = msg.start
@@ -64,10 +64,10 @@ let child (childMailbox:Actor<ChildMessage>) =
         for i = start to start+length-1 do
                 
                 //Add to sum the square of each value
-                sum <- sum + i*i
+                sum <- sum + (float i* float i)
         
         //If the final sum has a whole number as square root then sequence is valid
-        if sqrt (float sum) % float 1 = 0.0 then
+        if sqrt sum % float 1 = 0.0 then
             
             //and change the answer to true
             retVal <- true
