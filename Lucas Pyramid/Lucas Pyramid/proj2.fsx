@@ -82,7 +82,7 @@ let parent (mailbox: Actor<_>) =
                 actors<-actors+1
 
         | Sendc(b,x) ->
-            printfn "%i count = %i\n" x
+            printfn "%i" x
         | Done(x) ->
             completedActors<-completedActors+1
         
