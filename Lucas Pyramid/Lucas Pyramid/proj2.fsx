@@ -59,7 +59,6 @@ let timer = new Stopwatch()
 timer.Start()
 
 let parent (mailbox: Actor<_>) =
-    let mutable count = 1
     let mutable actors = 0
     let mutable completedActors = 0
     let rec loop () = actor {
@@ -68,7 +67,6 @@ let parent (mailbox: Actor<_>) =
         match message with
         | StartP(x,y) -> 
             let window = x/4
-            printfn "window is %i" window
             let mutable count = 1
             while (count+window-1<=x) do
                 let name = count.ToString()+"child"
@@ -84,8 +82,12 @@ let parent (mailbox: Actor<_>) =
                 actors<-actors+1
 
         | Sendc(b,x) ->
+<<<<<<< Updated upstream
             printfn "%i count = %i\n" x count
             count <- count + 1
+=======
+            printfn "%i" x 
+>>>>>>> Stashed changes
         | Done(x) ->
             completedActors<-completedActors+1
         
