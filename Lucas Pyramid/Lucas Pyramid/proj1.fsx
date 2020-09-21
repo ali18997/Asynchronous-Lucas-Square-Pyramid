@@ -1,13 +1,16 @@
-﻿
+﻿#I @"packages"
 #r "nuget: Akka" 
 #r "nuget: Akka.FSharp" 
 #r "nuget: Akka.TestKit"
+#r "Extreme.Numerics.dll"
+#r "Extreme.Numerics.FSharp.dll"
 
 open Akka
 open Akka.Actor
 open Akka.FSharp
 open System
 open System.Diagnostics
+open Extreme.Mathematics
 
 //Message that will be passed to parents to start code as well as to reply from child to parent
 type ParentMessage() = 
@@ -41,6 +44,13 @@ type ChildMessage() =
 //Create System reference
 let system = System.create "system" <| Configuration.defaultConfig()
 
+let perfectSquare (x: bigint) =
+    let p = int64 (x)
+    let xnum = Extreme.Mathematics.BigInteger(p)
+    let ynum = Extreme.Mathematics.Quad (xnum)
+    let ans = Extreme.Mathematics.Quad.Sqrt ynum
+    let ans2 = Extreme.Mathematics.Quad.Floor ans
+    Extreme.Mathematics.Quad.Equals(ans,ans2)
 
 //Child Actor that will work on subproblems
 let child (childMailbox:Actor<ChildMessage>) = 
@@ -52,7 +62,7 @@ let child (childMailbox:Actor<ChildMessage>) =
         let! msg = childMailbox.Receive()
 
         //Sum counter that will keep track of sum so far
-        let mutable sum = float 0
+        let mutable sum = bigint 0
 
         //Starting value of the sequence to check
         let start = msg.start
@@ -67,10 +77,10 @@ let child (childMailbox:Actor<ChildMessage>) =
         for i = start to start+length-1 do
                 
                 //Add to sum the square of each value
-                sum <- sum + (float i) * (float i)
+                sum <- sum + (bigint i) * (bigint i)
         
         //If the final sum has a whole number as square root then sequence is valid
-        if sqrt sum % float 1 = 0.0 then
+        if perfectSquare sum then
             
             //and change the answer to true
             retVal <- true
