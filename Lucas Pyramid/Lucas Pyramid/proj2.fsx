@@ -6,6 +6,9 @@
 // #r "System.Configuration.ConfigurationManager.dll"
 #r "Newtonsoft.Json.dll"
 #r "FsPickler.dll"
+#r "FSharp.Core.dll"
+#r "Extreme.Numerics.dll"
+#r "Extreme.Numerics.FSharp.dll"
 // #time "on"
 
 open Akka
@@ -13,6 +16,7 @@ open Akka.FSharp
 open Akka.Actor
 open System
 open System.Diagnostics
+open Extreme.Mathematics
 
 let system = System.create "system" <| Configuration.load ()
 
@@ -22,11 +26,13 @@ type ProcessorMessage =
     | StartP of int*int
     | Done of int
 
-
 let perfectSquare (x: bigint) =
-    let ans1 = sqrt <| float (x)
-    let ans2 = floor ans1
-    ans1 = ans2
+    let p = int64 (x)
+    let xnum = Extreme.Mathematics.BigInteger(p)
+    let ynum = Extreme.Mathematics.Quad (xnum)
+    let ans = Extreme.Mathematics.Quad.Sqrt ynum
+    let ans2 = Extreme.Mathematics.Quad.Floor ans
+    Extreme.Mathematics.Quad.Equals(ans,ans2)
 
 let lucas (mailbox: Actor<_>) = 
     let rec loop () = actor {
@@ -90,7 +96,7 @@ let parent (mailbox: Actor<_>) =
                 actors<-actors+1
 
         | Sendc(b,x) ->
-            printfn "%i count = %i" x count
+            printfn "%i count = %i\n" x count
             count <- count + 1
         | Done(x) ->
             completedActors<-completedActors+1
@@ -127,4 +133,3 @@ let parentActor = spawn system "parent" parent
 parentActor <! StartP(first,second)
 
 System.Console.ReadKey() |> ignore
-
