@@ -34,7 +34,7 @@ Cores Used = 7.021961
 
 
 • The largest problem you managed to solve.
-The highest problem tried was 100000000 20
+The highest problem tried was 100000000 4
 The result for it is as follows:
 No sequence found
 
